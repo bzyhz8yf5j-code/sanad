@@ -10,10 +10,13 @@
 - EAS workflow for physical iPhone development build is ready on branch `build/ios-device`.
 - GitHub target repository confirmed: `bzyhz8yf5j-code/sanad` (kept separate from `al-saad`).
 - Reproducible npm dependency lockfile is included.
+- Source transfer to GitHub `main` is complete and synchronized through ChatGPT.
+- Core Arabic RTL interface is implemented with the approved navy/gold direction: home, search, add property, favorites, account, Iraq map, offices, and property details.
+- Demo property records are visibly labeled and never presented as governmental or legal verification.
 
 ## Verification
 
-- Source syntax: PASS (99 TypeScript/TSX files).
+- Source syntax: PASS (103 TypeScript/TSX files).
 - Domain tests: PASS.
 - TypeScript strict typecheck: PASS.
 - Expo SDK 57 alignment: PASS.
@@ -21,14 +24,15 @@
 - EAS project link: PASS.
 - EAS workflow structure: PASS.
 - Release readiness: PASS, except runtime public environment variables that are supplied by EAS.
+- Expo web production export: PASS (45 static routes).
 
-## Current external dependency
+## Current release gate
 
-Connect the Expo GitHub App to `bzyhz8yf5j-code/sanad` from the Sanad project settings so pushes to the prepared build branches can start EAS workflows.
+No EAS or device build has been started. Before a native distribution build, confirm the target build type and credentials explicitly; local checks intentionally report the Supabase public variables as runtime-provided.
 
 ## Build order
 
-1. Push prepared source to branch `build/eas-development`.
-2. EAS runs source checks and iOS simulator development build.
-3. Configure Apple Developer credentials/device registration.
-4. Push/trigger branch `build/ios-device` for the physical iPhone Development Client.
+1. Continue product implementation and local/GitHub quality checks on `main`.
+2. After explicit approval, trigger the iOS simulator development workflow.
+3. Configure Apple Developer credentials/device registration only when a physical-device build is requested.
+4. Trigger the physical iPhone Development Client workflow after those prerequisites are confirmed.

@@ -10,8 +10,9 @@
 - [x] RLS baseline
 - [x] Domain tests
 - [x] TS/TSX syntax validation
-- [ ] npm install + lockfile
-- [ ] Expo doctor + full typecheck
+- [x] npm install + lockfile
+- [x] Full TypeScript typecheck
+- [ ] Expo doctor
 - [ ] Supabase local reset + RLS integration tests
 - [ ] Real Map provider
 - [ ] Licensed CAD provider

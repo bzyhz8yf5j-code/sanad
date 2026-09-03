@@ -20,5 +20,5 @@ export default function RootLayout() {
     const sub = Notifications.addNotificationResponseReceivedListener((r) => openNotification(r.notification.request.content.data as Record<string, unknown> | undefined));
     return () => { sub.remove(); unbindAuthRefresh(); };
   }, []);
-  return <><StatusBar style="light" /><Stack screenOptions={{ headerShown: false }} /></>;
+  return <><StatusBar style="light" /><Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#061425' }, animation: 'fade_from_bottom' }} /></>;
 }
