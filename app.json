@@ -1,0 +1,80 @@
+{
+  "expo": {
+    "name": "سند",
+    "slug": "sanad",
+    "scheme": "sanad",
+    "version": "0.12.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "sanad-default",
+          "color": "#D3A64A"
+        }
+      ],
+      [
+        "expo-dev-client",
+        {
+          "launchMode": "most-recent"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "يستخدم سند موقعك أثناء العمل الميداني لربط الملاحظات والصور بموقع العقار."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "يستخدم سند مكتبة الصور لإرفاق صور العقارات والمستندات الميدانية.",
+          "cameraPermission": "يستخدم سند الكاميرا لالتقاط صور ميدانية مرتبطة بالعقار.",
+          "microphonePermission": false
+        }
+      ],
+      "@maplibre/maplibre-react-native"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "iq.sanad.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "يستخدم سند موقعك أثناء العمل الميداني لتحديد موقع العقار وربط الملاحظات به.",
+        "NSCameraUsageDescription": "يستخدم سند الكاميرا لالتقاط صور العقارات والعمل الميداني.",
+        "NSPhotoLibraryUsageDescription": "يستخدم سند مكتبة الصور لإرفاق صور ومستندات العقار."
+      }
+    },
+    "android": {
+      "package": "iq.sanad.app",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "owner": "eng.mohammad92",
+    "extra": {
+      "eas": {
+        "projectId": "d8021acb-3d10-41f5-8623-f41ac8e64e8b"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d8021acb-3d10-41f5-8623-f41ac8e64e8b"
+    }
+  }
+}

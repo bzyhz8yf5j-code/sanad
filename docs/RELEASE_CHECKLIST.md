@@ -1,0 +1,22 @@
+# Checklist — Release Candidate
+
+- [x] Domain permissions
+- [x] Professional approval workflow
+- [x] Media ordering/cover validation
+- [x] Advanced filter domain logic
+- [x] Notification adapter skeleton
+- [x] Report adapter skeleton
+- [x] Rate-limit domain + server table
+- [x] RLS baseline
+- [x] Domain tests
+- [x] TS/TSX syntax validation
+- [ ] npm install + lockfile
+- [ ] Expo doctor + full typecheck
+- [ ] Supabase local reset + RLS integration tests
+- [ ] Real Map provider
+- [ ] Licensed CAD provider
+- [ ] PDF renderer
+- [ ] Push worker with retry
+- [ ] TestFlight / Android development build
+- [ ] Device QA + accessibility + Arabic typography QA
+- [ ] Privacy/terms/store compliance

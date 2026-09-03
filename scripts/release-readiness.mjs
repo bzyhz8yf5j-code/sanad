@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const checks=[]; const add=(name,ok,detail='')=>checks.push({name,ok,detail});
+const exists=(p)=>fs.existsSync(path.join(root,p));
+for(const f of ['package.json','app.json','eas.json','.env.example','supabase/config.toml','supabase/tests/rls_smoke.sql','supabase/fixtures/demo.sql','docs/RELEASE_CHECKLIST.md','BUILD_STATUS.md']) add(`file:${f}`,exists(f));
+const migrations=fs.readdirSync(path.join(root,'supabase/migrations')).filter(x=>x.endsWith('.sql')).sort();
+const validMigrationNames=migrations.every((x)=>/^\d{14}_[a-z0-9_]+\.sql$/i.test(x));
+add('migrations_remote_aligned',validMigrationNames && migrations.length>=7,`${migrations.length} timestamped migrations`);
+const funcs=fs.readdirSync(path.join(root,'supabase/functions')).filter(x=>exists(`supabase/functions/${x}/index.ts`)); add('edge_functions',funcs.length>=10,`${funcs.length} functions`);
+add('lockfile',exists('package-lock.json')||exists('pnpm-lock.yaml')||exists('yarn.lock'),'expected only after npm registry is reachable');
+for(const key of ['EXPO_PUBLIC_SUPABASE_URL','EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY']) add(`env:${key}`,Boolean(process.env[key]),'runtime environment');
+console.log('\nSanad release readiness\n'); for(const c of checks) console.log(`${c.ok?'PASS':'WAIT'}  ${c.name}${c.detail?` — ${c.detail}`:''}`);
+const hard=checks.filter(c=>!c.ok&&!['lockfile','env:EXPO_PUBLIC_SUPABASE_URL','env:EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY'].includes(c.name));
+if(hard.length) process.exitCode=1;

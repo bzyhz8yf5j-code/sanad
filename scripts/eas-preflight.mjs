@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+const app=JSON.parse(fs.readFileSync('app.json','utf8')).expo;
+const eas=JSON.parse(fs.readFileSync('eas.json','utf8'));
+const checks=[]; const add=(name,ok,detail='')=>checks.push({name,ok,detail});
+add('eas_project_link',Boolean(app.extra?.eas?.projectId),app.extra?.eas?.projectId||'run eas init');
+add('package_lock',fs.existsSync('package-lock.json'),'created by npm install');
+add('development_profile',Boolean(eas.build?.development?.developmentClient),'developmentClient=true');
+add('preview_profile',Boolean(eas.build?.preview),'preview');
+add('production_profile',Boolean(eas.build?.production),'production');
+add('ios_bundle',Boolean(app.ios?.bundleIdentifier),app.ios?.bundleIdentifier||'');
+add('android_package',Boolean(app.android?.package),app.android?.package||'');
+const profileEnv=eas.build?.development?.env||{};
+add('supabase_url',Boolean(process.env.EXPO_PUBLIC_SUPABASE_URL || profileEnv.EXPO_PUBLIC_SUPABASE_URL),'EXPO_PUBLIC_SUPABASE_URL');
+add('supabase_key',Boolean(process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || profileEnv.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY),'EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY');
+console.log('\nSanad EAS preflight\n');
+for(const c of checks) console.log(`${c.ok?'PASS':'WAIT'}  ${c.name}${c.detail?` — ${c.detail}`:''}`);
+const hard=checks.filter(c=>!c.ok && !['eas_project_link','package_lock','supabase_url','supabase_key'].includes(c.name));
+if(hard.length) process.exitCode=1;

@@ -1,0 +1,2 @@
+create table public.favorites (user_id uuid references public.profiles(id) on delete cascade, property_id uuid references public.properties(id) on delete cascade, created_at timestamptz default now(), primary key(user_id,property_id));
+create table public.saved_searches (id uuid primary key default gen_random_uuid(), user_id uuid not null references public.profiles(id) on delete cascade, name text not null, filters jsonb not null, enabled boolean not null default true, created_at timestamptz default now());

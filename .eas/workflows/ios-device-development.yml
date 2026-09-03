@@ -1,0 +1,24 @@
+name: Sanad iOS Device Development
+
+on:
+  push:
+    branches: ['build/ios-device']
+
+jobs:
+  checks:
+    name: Source and native checks
+    environment: development
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - run: npm run check
+      - run: npm run typecheck
+      - run: npm run native:check
+
+  build_ios_device:
+    name: Build iOS Development Client
+    needs: [checks]
+    type: build
+    params:
+      platform: ios
+      profile: development

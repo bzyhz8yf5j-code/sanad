@@ -1,0 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import { Screen } from '../../../../src/components/Screen';
+import { Body, Button, Card, Field, Title } from '../../../../src/components/Ui';
+import { listPropertyRisks, resolvePropertyRisk } from '../../../../src/services/risks';
+export default function PropertyRisks(){const {id}=useLocalSearchParams<{id:string}>();const [items,setItems]=useState<any[]>([]);const [note,setNote]=useState('');const [message,setMessage]=useState('');async function load(){if(id)setItems(await listPropertyRisks(id))}useEffect(()=>{load().catch(()=>setMessage('تعذر تحميل المخاطر'))},[id]);return <Screen><Title>رادار مخاطر العقار</Title><Card><Body>المخاطر العالية والحرجة يجب حلها قبل نشر الإعلان، ويُحفظ سبب الحل وهوية المنفذ في سجل التدقيق.</Body><Field placeholder="ملاحظة حل الخطر" value={note} onChangeText={setNote}/></Card>{items.map(r=><Card key={r.id}><Title>{r.severity} · {r.code}</Title><Body>{r.message}</Body><Body>{r.resolved_at?'محلول':'غير محلول'}</Body>{!r.resolved_at?<Button label="حل الخطر" onPress={async()=>{try{await resolvePropertyRisk(r.id,note);setNote('');await load();setMessage('تم تسجيل الحل')}catch{setMessage('تعذر حل الخطر')}}}/>:null}</Card>)}{message?<Card><Body>{message}</Body></Card>:null}</Screen>}
