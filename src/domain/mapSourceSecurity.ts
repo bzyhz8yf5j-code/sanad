@@ -1,7 +1,9 @@
 function isPrivateIpv4(host: string): boolean {
   const p = host.split('.').map(Number);
-  if (p.length !== 4 || p.some(Number.isNaN)) return false;
-  return p[0] === 10 || p[0] === 127 || (p[0] === 169 && p[1] === 254) || (p[0] === 172 && p[1] >= 16 && p[1] <= 31) || (p[0] === 192 && p[1] === 168);
+  if (p.length !== 4 || p.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) return false;
+  const [first, second] = p;
+  if (first === undefined || second === undefined) return false;
+  return first === 10 || first === 127 || (first === 169 && second === 254) || (first === 172 && second >= 16 && second <= 31) || (first === 192 && second === 168);
 }
 export function validateMapSourceEndpoint(raw: string): string[] {
   try {

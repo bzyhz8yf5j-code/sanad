@@ -1,11 +1,9 @@
-# Sanad EAS Native Build Handoff — v0.11.0
+# Sanad EAS Native Build Handoff — v0.12.0
 
 ## Status
-The project is prepared for EAS Development Builds. Local source checks pass. The remaining external prerequisites are:
-1. npm connectivity so dependencies can be installed and package-lock.json can be created.
-2. Expo/EAS account authentication and `eas init`, which writes `expo.extra.eas.projectId`.
-3. EAS environment variables for `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
-4. Apple Developer credentials/device registration for a development build installed on a physical iPhone. Android internal development builds do not require a Play Store account.
+The project is prepared for EAS Development Builds. Dependency installation, source checks, strict typechecking, and the EAS project link are complete. The remaining external prerequisites are:
+1. EAS environment variables for `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+2. Apple Developer credentials/device registration for a development build installed on a physical iPhone. Android internal development builds do not require a Play Store account.
 
 ## Prepared build profiles
 - `development`: physical-device Dev Client, internal distribution.

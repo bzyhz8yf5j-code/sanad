@@ -1,9 +1,9 @@
-import type { PropsWithChildren } from 'react';
+import type { ComponentProps, PropsWithChildren } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors } from '../theme/colors';
 
-export function Title({ children }: PropsWithChildren) { return <Text style={s.title}>{children}</Text>; }
-export function Body({ children }: PropsWithChildren) { return <Text style={s.body}>{children}</Text>; }
+export function Title({ children, style, ...props }: ComponentProps<typeof Text>) { return <Text {...props} style={[s.title, style]}>{children}</Text>; }
+export function Body({ children, style, ...props }: ComponentProps<typeof Text>) { return <Text {...props} style={[s.body, style]}>{children}</Text>; }
 export function Card({ children }: PropsWithChildren) { return <View style={s.card}>{children}</View>; }
 export function Button({ label, onPress }: { label: string; onPress?: () => void }) { return <Pressable onPress={onPress} style={s.button}><Text style={s.buttonText}>{label}</Text></Pressable>; }
 export function Field(props: React.ComponentProps<typeof TextInput>) { return <TextInput placeholderTextColor={colors.muted} {...props} style={[s.input, props.style]} />; }
