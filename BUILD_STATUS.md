@@ -13,6 +13,8 @@
 - Source transfer to GitHub `main` is complete and synchronized through ChatGPT.
 - Core Arabic RTL interface is implemented with the approved navy/gold direction: home, search, add property, favorites, account, Iraq map, offices, and property details.
 - Demo property records are visibly labeled and never presented as governmental or legal verification.
+- Account access now uses real Supabase Auth only; disconnected previews report their state instead of simulating a successful login.
+- The office workflow is connected end-to-end: dashboard, approved-office selection, property draft, media upload/order/cover, risk resolution, readiness blockers, publishing, and report request.
 
 ## Verification
 

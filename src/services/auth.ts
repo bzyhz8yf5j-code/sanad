@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase';
 
 export async function signUp(email: string, password: string, displayName: string) {
-  if (!supabase) return { demo: true };
+  if (!supabase) throw new Error('backend_unavailable');
   const { data, error } = await supabase.auth.signUp({
     email: email.trim().toLowerCase(),
     password,
@@ -12,7 +12,7 @@ export async function signUp(email: string, password: string, displayName: strin
 }
 
 export async function signIn(email: string, password: string) {
-  if (!supabase) return { demo: true };
+  if (!supabase) throw new Error('backend_unavailable');
   const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
   if (error) throw error;
   return data;

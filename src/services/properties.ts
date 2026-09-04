@@ -17,6 +17,31 @@ export interface CreatePropertyInput {
   neighborhood?: string;
 }
 
+export interface OfficePropertySummary {
+  id: string;
+  title: string;
+  status: 'draft' | 'pending_review' | 'published' | 'archived' | 'rejected';
+  price: number;
+  currency: string;
+  area_sqm: number;
+  governorate: string;
+  district?: string | null;
+  verified: boolean;
+  updated_at?: string;
+}
+
+export async function listOfficeProperties(officeId: string): Promise<OfficePropertySummary[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('properties')
+    .select('id,title,status,price,currency,area_sqm,governorate,district,verified,updated_at')
+    .eq('office_id', officeId)
+    .order('updated_at', { ascending: false })
+    .limit(50);
+  if (error) throw error;
+  return (data ?? []) as OfficePropertySummary[];
+}
+
 export async function createProperty(input: CreatePropertyInput) {
   if (!supabase) return { id: 'demo-property', status: 'draft' };
   const { data: auth } = await supabase.auth.getUser();
@@ -59,7 +84,7 @@ export async function publishProperty(propertyId: string, readiness: PropertyDra
 }
 
 export async function getPropertyForEdit(propertyId: string) {
-  if (!supabase) return { id: propertyId, title: 'عقار تجريبي', description: '', price: 0, area_sqm: 0, district: '', neighborhood: '', revision: 1 };
+  if (!supabase) return { id: propertyId, office_id: 'demo-office', title: 'عقار تجريبي', description: '', property_type: 'دار', purpose: 'sale' as const, price: 0, currency: 'IQD', area_sqm: 0, bedrooms: null, governorate: 'بغداد', district: '', neighborhood: '', status: 'draft' as const, revision: 1, updated_at: new Date().toISOString() };
   const { data, error } = await supabase.from('properties').select('id,office_id,parcel_id,title,description,property_type,purpose,price,currency,area_sqm,bedrooms,governorate,district,neighborhood,status,revision,updated_at').eq('id', propertyId).single();
   if (error) throw error;
   return data;
