@@ -12,12 +12,18 @@
 - [x] TS/TSX syntax validation
 - [x] npm install + lockfile
 - [x] Full TypeScript typecheck
-- [ ] Expo doctor
+- [x] Device diagnostics screen
+- [x] Production guard against demo map tiles
+- [x] Offline retry backoff + retry ceiling
+- [x] iPhone device-registration step in EAS workflow
+- [ ] Expo doctor on the final build revision
 - [ ] Supabase local reset + RLS integration tests
-- [ ] Real Map provider
+- [ ] Licensed production Map Style URL
 - [ ] Licensed CAD provider
 - [ ] PDF renderer
-- [ ] Push worker with retry
-- [ ] TestFlight / Android development build
+- [ ] Push worker end-to-end delivery test
+- [ ] First EAS iOS simulator development build
+- [ ] First physical iPhone Development Build
 - [ ] Device QA + accessibility + Arabic typography QA
+- [ ] Approved Sanad app icon/splash in the native project
 - [ ] Privacy/terms/store compliance

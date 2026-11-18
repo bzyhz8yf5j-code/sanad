@@ -7,3 +7,6 @@ export const config = {
 };
 
 export const hasSupabaseConfig = Boolean(config.supabaseUrl && config.supabaseKey);
+export const isProductionRuntime = config.appEnv === 'production';
+export const hasConfiguredMapStyle = Boolean(config.mapStyleUrl);
+export const canUseDevelopmentMapFallback = !isProductionRuntime;

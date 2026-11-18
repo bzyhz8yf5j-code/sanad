@@ -72,6 +72,7 @@ export default function AccountScreen() {
       {message ? <Card><Caption style={styles.error}>{message}</Caption></Card> : null}
       <Button label="تسجيل الدخول" icon="account" onPress={() => router.push('/auth/login')} />
       <Button label="إنشاء حساب جديد" variant="secondary" onPress={() => router.push('/auth/register')} />
+      <Button label="فحص الجهاز والاتصال" variant="ghost" icon="shield" onPress={() => router.push('/diagnostics' as any)} />
     </Screen>;
   }
 
@@ -111,6 +112,12 @@ export default function AccountScreen() {
       <AccountAction icon="shield" title="اعتماد مهني" description="للمهندسين والمسّاحين والمختصين" onPress={() => router.push('/professionals/apply')} />
       {['admin', 'supervisor'].includes(role) ? <><Divider /><AccountAction icon="account" title="لوحة الإدارة" description="المراجعات وإدارة المصادر والخدمات" onPress={() => router.push('/admin')} /></> : null}
     </Card>
+
+    <SectionTitle>الجهاز والاتصال</SectionTitle>
+    <Card>
+      <AccountAction icon="shield" title="فحص الجهاز والاتصال" description="EAS وSupabase والخرائط والإشعارات والمزامنة" onPress={() => router.push('/diagnostics' as any)} />
+    </Card>
+
     <Button label="تسجيل الخروج" variant="danger" onPress={async () => { await signOut(); setAccount(null); setOffices([]); }} />
   </Screen>;
 }

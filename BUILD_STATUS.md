@@ -1,4 +1,4 @@
-# سند — حالة البناء v0.12.0
+# سند — حالة البناء v0.12.0 / Native Readiness Batch
 
 ## الحالة الحالية
 
@@ -7,34 +7,35 @@
 - Supabase live backend connected.
 - EAS public client environment is embedded in build profiles.
 - EAS workflow for iOS simulator development build is ready on branch `build/eas-development`.
-- EAS workflow for physical iPhone development build is ready on branch `build/ios-device`.
+- Physical iPhone workflow now includes Expo Apple device registration request and ad-hoc provisioning refresh before the Development Client build.
 - GitHub target repository confirmed: `bzyhz8yf5j-code/sanad` (kept separate from `al-saad`).
 - Reproducible npm dependency lockfile is included.
-- Source transfer to GitHub `main` is complete and synchronized through ChatGPT.
-- Core Arabic RTL interface is implemented with the approved navy/gold direction: home, search, add property, favorites, account, Iraq map, offices, and property details.
-- Demo property records are visibly labeled and never presented as governmental or legal verification.
-- Account access now uses real Supabase Auth only; disconnected previews report their state instead of simulating a successful login.
-- The office workflow is connected end-to-end: dashboard, approved-office selection, property draft, media upload/order/cover, risk resolution, readiness blockers, publishing, and report request.
+- Core Arabic RTL interface is implemented with the approved navy/gold direction.
+- Account access uses real Supabase Auth only.
+- Office workflow is connected end-to-end: dashboard, property draft, media, risks, readiness blockers, publishing and report request.
+- Device diagnostics screen added for EAS, Supabase health, map configuration, Push permission and Offline queues.
+- Production map runtime no longer falls back to public demo tiles when a licensed style is missing.
+- Property Offline queue now uses retry backoff, a retry ceiling and manual retry for transient failures while conflicts remain protected.
 
-## Verification
+## Verification target for this batch
 
-- Source syntax: PASS (103 TypeScript/TSX files).
-- Domain tests: PASS.
-- TypeScript strict typecheck: PASS.
-- Expo SDK 57 alignment: PASS.
-- Native readiness: PASS.
-- EAS project link: PASS.
-- EAS workflow structure: PASS.
-- Release readiness: PASS, except runtime public environment variables that are supplied by EAS.
-- Expo web production export: PASS (45 static routes).
+The PR must pass:
+- `npm run check`
+- `npm run typecheck`
+- `npm run release:readiness`
+
+GitHub quality CI remains the merge gate.
 
 ## Current release gate
 
-No EAS or device build has been started. Before a native distribution build, confirm the target build type and credentials explicitly; local checks intentionally report the Supabase public variables as runtime-provided.
+No EAS native build is considered verified until a workflow run produces an actual iOS artifact. For a physical iPhone build, Apple device enrollment/approval and signing credentials are still required in the official Expo/Apple flow.
 
-## Build order
+## Remaining high-priority release work
 
-1. Continue product implementation and local/GitHub quality checks on `main`.
-2. After explicit approval, trigger the iOS simulator development workflow.
-3. Configure Apple Developer credentials/device registration only when a physical-device build is requested.
-4. Trigger the physical iPhone Development Client workflow after those prerequisites are confirmed.
+1. Run the iOS simulator workflow and fix any cloud-only native issue.
+2. Run the physical iPhone workflow and complete device registration/signing.
+3. Execute `docs/NATIVE_QA.md` on a real iPhone.
+4. Add the officially approved Sanad icon/splash assets.
+5. Configure a licensed production Map Style URL.
+6. Finish end-to-end Push delivery testing.
+7. Keep AI assistant and licensed CAD integration as separate implementation batches; neither should be presented as production-ready until a real provider is connected.
