@@ -3,7 +3,7 @@
     "name": "سند",
     "slug": "sanad",
     "scheme": "sanad",
-    "version": "0.17.0",
+    "version": "0.18.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,

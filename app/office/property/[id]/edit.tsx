@@ -160,6 +160,7 @@ export default function EditProperty() {
     <View style={styles.tools}><View style={styles.grow}><Button label="الوسائط" icon="document" variant="secondary" onPress={() => router.push(`/office/property/${id}/media` as never)} /></View><View style={styles.grow}><Button label="المخاطر" icon="shield" variant="secondary" onPress={() => router.push(`/office/property/${id}/risks` as never)} /></View></View>
     <Button label={status === 'published' ? 'عرض الإعلان' : saving ? 'جاري النشر…' : 'نشر الإعلان'} icon={status === 'published' ? 'building' : 'arrow'} disabled={saving || (status !== 'published' && blockers.length > 0)} onPress={status === 'published' ? () => router.push(`/property/${id}` as never) : publish} />
     <Button label="إنشاء تقرير PDF" icon="document" variant="ghost" onPress={report} />
+    <Button label="سجل تقارير PDF" icon="document" variant="ghost" onPress={() => router.push((`/reports/${id}`) as any)} />
     {message ? <Card><Body>{message}</Body></Card> : null}
   </Screen>;
 }
