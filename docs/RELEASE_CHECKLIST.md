@@ -23,7 +23,8 @@
 - [ ] Supabase local reset + RLS integration tests
 - [ ] National-launch map SLA/self-hosting decision
 - [ ] Licensed CAD provider
-- [ ] PDF renderer
+- [x] PDF renderer + private storage + signed report history
+- [ ] Visual Arabic PDF QA with configured production font
 - [ ] Physical iPhone device enrollment + approval
 - [ ] First physical iPhone Development Build
 - [ ] Device QA + accessibility + Arabic typography QA
