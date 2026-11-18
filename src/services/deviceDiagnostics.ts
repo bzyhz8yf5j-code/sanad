@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 import { canUseDevelopmentMapFallback, config, hasConfiguredMapStyle, hasSupabaseConfig, isProductionRuntime } from '../lib/config';
 import { pendingFieldObservationCount, pendingFieldSessionCount } from './fieldMode';
 import { loadOfflineQueue } from './offlineSync';
+import { loadLastSyncSummary } from './syncCoordinator';
 
 export type DiagnosticStatus = 'pass' | 'warn' | 'fail' | 'info';
 
@@ -22,12 +23,12 @@ export interface DeviceDiagnostics {
 async function checkSupabaseHealth() {
   if (!hasSupabaseConfig) return { ok: false, detail: 'إعدادات Supabase غير موجودة' };
   try {
-    const response = await fetch(`${config.supabaseUrl}/auth/v1/health`, {
+    const response = await fetch(config.supabaseUrl + '/auth/v1/health', {
       headers: { apikey: config.supabaseKey },
     });
     return response.ok
       ? { ok: true, detail: 'الاتصال بخدمة المصادقة متاح' }
-      : { ok: false, detail: `الخدمة أعادت HTTP ${response.status}` };
+      : { ok: false, detail: 'الخدمة أعادت HTTP ' + response.status };
   } catch (error) {
     return { ok: false, detail: error instanceof Error ? error.message : 'تعذر الاتصال بـ Supabase' };
   }
@@ -42,14 +43,14 @@ export async function runDeviceDiagnostics(): Promise<DeviceDiagnostics> {
     id: 'runtime',
     label: 'بيئة التشغيل',
     status: Platform.OS === 'web' ? 'warn' : 'pass',
-    detail: `${Platform.OS} · الإصدار ${appVersion} · ${config.appEnv}`,
+    detail: Platform.OS + ' · الإصدار ' + appVersion + ' · ' + config.appEnv,
   });
 
   items.push({
     id: 'eas',
     label: 'ربط EAS',
     status: projectId ? 'pass' : 'fail',
-    detail: projectId ? `Project ID: ${projectId}` : 'لا يوجد EAS Project ID في إعدادات التطبيق',
+    detail: projectId ? 'Project ID: ' + projectId : 'لا يوجد EAS Project ID في إعدادات التطبيق',
   });
 
   const supabase = await checkSupabaseHealth();
@@ -80,7 +81,7 @@ export async function runDeviceDiagnostics(): Promise<DeviceDiagnostics> {
         id: 'push',
         label: 'إذن الإشعارات',
         status: permission.status === 'granted' ? 'pass' : permission.status === 'denied' ? 'warn' : 'info',
-        detail: `الحالة: ${permission.status}`,
+        detail: 'الحالة: ' + permission.status,
       });
     } catch (error) {
       items.push({
@@ -92,18 +93,29 @@ export async function runDeviceDiagnostics(): Promise<DeviceDiagnostics> {
     }
   }
 
-  const [offlineQueue, fieldObservations, fieldSessions] = await Promise.all([
+  const [offlineQueue, fieldObservations, fieldSessions, lastSync] = await Promise.all([
     loadOfflineQueue(),
     pendingFieldObservationCount(),
     pendingFieldSessionCount(),
+    loadLastSyncSummary(),
   ]);
   const pending = offlineQueue.filter((item) => item.status === 'pending').length;
   const failed = offlineQueue.filter((item) => item.status === 'failed').length;
+
   items.push({
     id: 'offline',
     label: 'طابور المزامنة',
     status: failed > 0 ? 'warn' : 'pass',
-    detail: `عقارات: ${pending} بانتظار المزامنة · ${failed} تحتاج مراجعة · ميدان: ${fieldObservations} ملاحظة و${fieldSessions} جلسة`,
+    detail: 'عقارات: ' + pending + ' بانتظار المزامنة · ' + failed + ' تحتاج مراجعة · ميدان: ' + fieldObservations + ' ملاحظة و' + fieldSessions + ' جلسة',
+  });
+
+  items.push({
+    id: 'last-sync',
+    label: 'آخر مزامنة',
+    status: lastSync ? 'pass' : 'info',
+    detail: lastSync
+      ? new Date(lastSync.completedAt).toLocaleString('ar-IQ') + ' · ' + lastSync.source
+      : 'لا توجد مزامنة مسجلة على هذا الجهاز بعد',
   });
 
   return { generatedAt: new Date().toISOString(), items };

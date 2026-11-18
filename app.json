@@ -10,38 +10,17 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      [
-        "expo-notifications",
-        {
-          "defaultChannel": "sanad-default",
-          "color": "#D3A64A"
-        }
-      ],
-      [
-        "expo-dev-client",
-        {
-          "launchMode": "most-recent"
-        }
-      ],
-      [
-        "expo-location",
-        {
-          "locationWhenInUsePermission": "يستخدم سند موقعك أثناء العمل الميداني لربط الملاحظات والصور بموقع العقار."
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "يستخدم سند مكتبة الصور لإرفاق صور العقارات والمستندات الميدانية.",
-          "cameraPermission": "يستخدم سند الكاميرا لالتقاط صور ميدانية مرتبطة بالعقار.",
-          "microphonePermission": false
-        }
-      ],
+      ["expo-notifications", {"defaultChannel": "sanad-default", "color": "#D3A64A"}],
+      ["expo-dev-client", {"launchMode": "most-recent"}],
+      ["expo-location", {"locationWhenInUsePermission": "يستخدم سند موقعك أثناء العمل الميداني لربط الملاحظات والصور بموقع العقار."}],
+      ["expo-image-picker", {
+        "photosPermission": "يستخدم سند مكتبة الصور لإرفاق صور العقارات والمستندات الميدانية.",
+        "cameraPermission": "يستخدم سند الكاميرا لالتقاط صور ميدانية مرتبطة بالعقار.",
+        "microphonePermission": false
+      }],
       "@maplibre/maplibre-react-native"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
+    "experiments": {"typedRoutes": true},
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "iq.sanad.app",
@@ -53,28 +32,12 @@
     },
     "android": {
       "package": "iq.sanad.app",
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "CAMERA",
-        "POST_NOTIFICATIONS"
-      ]
+      "permissions": ["ACCESS_COARSE_LOCATION","ACCESS_FINE_LOCATION","CAMERA","POST_NOTIFICATIONS"]
     },
-    "web": {
-      "bundler": "metro",
-      "output": "static"
-    },
-    "owner": "eng.mohammad92",
-    "extra": {
-      "eas": {
-        "projectId": "d8021acb-3d10-41f5-8623-f41ac8e64e8b"
-      }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/d8021acb-3d10-41f5-8623-f41ac8e64e8b"
-    }
+    "web": {"bundler": "metro", "output": "static"},
+    "owner": "engmohammad92s-team",
+    "extra": {"eas": {"projectId": "d8021acb-3d10-41f5-8623-f41ac8e64e8b"}},
+    "runtimeVersion": {"policy": "appVersion"},
+    "updates": {"url": "https://u.expo.dev/d8021acb-3d10-41f5-8623-f41ac8e64e8b"}
   }
 }
