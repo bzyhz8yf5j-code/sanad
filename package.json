@@ -1,6 +1,6 @@
 {
   "name": "sanad-platform",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
@@ -11,7 +11,7 @@
     "setup": "npx expo install --fix",
     "validate": "node scripts/validate.mjs",
     "test:domain": "node scripts/test-domain.mjs",
-    "check": "npm run validate && npm run test:domain",
+    "check": "npm run validate && npm run test:domain && npm run test:push",
     "typecheck": "tsc --noEmit",
     "supabase:start": "supabase start",
     "supabase:reset": "supabase db reset",
@@ -29,7 +29,8 @@
     "native:check": "npm run sdk57:check && npm run native:readiness && npm run eas:preflight",
     "workflow:check": "node scripts/workflow-readiness.mjs",
     "cloud:check": "npm run check && npm run sdk57:check && npm run native:readiness && npm run workflow:check",
-    "release:gate": "node scripts/production-release-gate.mjs"
+    "release:gate": "node scripts/production-release-gate.mjs",
+    "test:push": "node scripts/test-push-delivery.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
