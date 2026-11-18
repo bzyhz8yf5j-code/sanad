@@ -11,6 +11,7 @@ import { colors } from '../../src/theme/colors';
 
 interface PropertyView {
   id: string;
+  officeId?: string;
   title: string;
   description: string;
   propertyType: string;
@@ -43,7 +44,7 @@ export default function PropertyDetail() {
       setProperty({
         id: demo.id,
         title: demo.title,
-        description: `${demo.type} ${demo.purpose === 'sale' ? 'للبيع' : 'للإيجار'} في ${demo.location}. هذا العقار معروض ضمن البيانات التجريبية لواجهة سند.`,
+        description: demo.type + ' ' + (demo.purpose === 'sale' ? 'للبيع' : 'للإيجار') + ' في ' + demo.location + '. هذا العقار معروض ضمن البيانات التجريبية لواجهة سند.',
         propertyType: demo.type,
         purpose: demo.purpose,
         price: demo.price,
@@ -69,7 +70,7 @@ export default function PropertyDetail() {
 
     supabase
       .from('properties')
-      .select('id,title,description,property_type,purpose,price,currency,area_sqm,governorate,district,neighborhood,status,verified')
+      .select('id,office_id,title,description,property_type,purpose,price,currency,area_sqm,governorate,district,neighborhood,status,verified')
       .eq('id', id)
       .single()
       .then(({ data, error }) => {
@@ -80,6 +81,7 @@ export default function PropertyDetail() {
         } else {
           setProperty({
             id: data.id,
+            officeId: data.office_id || undefined,
             title: data.title,
             description: data.description || 'لم يضف المكتب وصفاً تفصيلياً لهذا العقار.',
             propertyType: data.property_type,
@@ -105,7 +107,7 @@ export default function PropertyDetail() {
     if (!id) return;
     try {
       const result = await startPropertyConversation(id);
-      router.push(`/messages/${result.conversationId}`);
+      router.push(('/messages/' + result.conversationId) as any);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'سجّل الدخول لبدء المحادثة');
     }
@@ -115,20 +117,41 @@ export default function PropertyDetail() {
     if (!id) return;
     try {
       const result = await createShareLink('property', id, 1440);
-      await Share.share({ message: `سند — رابط عقار صالح حتى ${new Date(result.expiresAt).toLocaleString('ar-IQ')}\nsanad://share/${result.token}` });
+      await Share.share({
+        message: 'سند — رابط عقار صالح حتى ' + new Date(result.expiresAt).toLocaleString('ar-IQ') + '\nsanad://share/' + result.token,
+      });
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'تعذر إنشاء رابط المشاركة');
     }
   }
 
+  function appointment() {
+    if (!property || property.demo || !property.officeId) {
+      setMessage('طلب الموعد متاح للعقارات الحقيقية المرتبطة بمكتب.');
+      return;
+    }
+    router.push(('/appointment/' + property.id + '?officeId=' + encodeURIComponent(property.officeId)) as any);
+  }
+
   if (loading) {
-    return <Screen><Title>تفاصيل العقار</Title><Card tone="elevated" style={styles.loadingVisual}><Icon name="building" color={colors.gold300} size={58} /><Caption>جاري تحميل بيانات العقار…</Caption></Card></Screen>;
+    return <Screen>
+      <Title>تفاصيل العقار</Title>
+      <Card tone="elevated" style={styles.loadingVisual}>
+        <Icon name="building" color={colors.gold300} size={58} />
+        <Caption>جاري تحميل بيانات العقار…</Caption>
+      </Card>
+    </Screen>;
   }
 
   if (!property) {
     return <Screen>
       <Title>تفاصيل العقار</Title>
-      <EmptyState icon="building" title="العقار غير متاح" description={message || 'قد يكون الإعلان أُزيل أو أن الرابط غير صحيح.'} action={<Button compact label="العودة إلى البحث" onPress={() => router.replace('/(tabs)/search')} />} />
+      <EmptyState
+        icon="building"
+        title="العقار غير متاح"
+        description={message || 'قد يكون الإعلان أُزيل أو أن الرابط غير صحيح.'}
+        action={<Button compact label="العودة إلى البحث" onPress={() => router.replace('/(tabs)/search')} />}
+      />
     </Screen>;
   }
 
@@ -137,8 +160,13 @@ export default function PropertyDetail() {
   return <Screen>
     <View style={styles.hero}>
       <View style={styles.glow} />
-      <View style={styles.heroBuilding}><Icon name={property.visual === 'land' ? 'land' : property.visual === 'commercial' ? 'office' : 'building'} color={colors.gold300} size={72} /></View>
-      <View style={styles.heroBadges}>{property.demo ? <Badge tone="warning">عرض تجريبي</Badge> : null}{property.verified ? <Badge tone="success">موثق في سند</Badge> : <Badge tone="muted">غير موثق</Badge>}</View>
+      <View style={styles.heroBuilding}>
+        <Icon name={property.visual === 'land' ? 'land' : property.visual === 'commercial' ? 'office' : 'building'} color={colors.gold300} size={72} />
+      </View>
+      <View style={styles.heroBadges}>
+        {property.demo ? <Badge tone="warning">عرض تجريبي</Badge> : null}
+        {property.verified ? <Badge tone="success">موثق في سند</Badge> : <Badge tone="muted">غير موثق</Badge>}
+      </View>
     </View>
 
     <View style={styles.titleBlock}>
@@ -159,7 +187,10 @@ export default function PropertyDetail() {
     <Card><Body>{property.description}</Body></Card>
 
     <Card tone="accent">
-      <View style={styles.disclaimerTitle}><Icon name="shield" color={colors.gold300} size={19} /><Text style={styles.disclaimerHeading}>وضوح المعلومات</Text></View>
+      <View style={styles.disclaimerTitle}>
+        <Icon name="shield" color={colors.gold300} size={19} />
+        <Text style={styles.disclaimerHeading}>وضوح المعلومات</Text>
+      </View>
       <Caption>{property.demo
         ? 'هذه بيانات توضيحية لا تمثل إعلاناً حقيقياً ولا وثيقة ملكية أو اعتماداً حكومياً.'
         : property.verified
@@ -168,7 +199,11 @@ export default function PropertyDetail() {
     </Card>
 
     <Button label="مراسلة المكتب" icon="message" onPress={chat} />
-    <View style={styles.actions}><View style={styles.action}><Button label="مشاركة" icon="document" variant="secondary" onPress={share} /></View><View style={styles.action}><Button label="عرض على الخريطة" icon="map" variant="secondary" onPress={() => router.push('/(tabs)/geo')} /></View></View>
+    {!property.demo && property.officeId ? <Button label="طلب موعد معاينة" icon="document" variant="secondary" onPress={appointment} /> : null}
+    <View style={styles.actions}>
+      <View style={styles.action}><Button label="مشاركة" icon="document" variant="secondary" onPress={share} /></View>
+      <View style={styles.action}><Button label="عرض على الخريطة" icon="map" variant="secondary" onPress={() => router.push('/(tabs)/geo')} /></View>
+    </View>
     {message ? <Card><Caption style={styles.error}>{message}</Caption></Card> : null}
   </Screen>;
 }

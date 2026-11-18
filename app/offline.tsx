@@ -7,7 +7,11 @@ import { loadLastSyncSummary, syncPendingWork, type SyncSummary } from '../src/s
 
 export default function OfflineCenter() {
   const [count, setCount] = useState(0);
+  const [properties, setProperties] = useState(0);
+  const [messages, setMessages] = useState(0);
+  const [appointments, setAppointments] = useState(0);
   const [failed, setFailed] = useState(0);
+  const [permanent, setPermanent] = useState(0);
   const [conflicts, setConflicts] = useState(0);
   const [fieldPending, setFieldPending] = useState(0);
   const [lastSync, setLastSync] = useState<SyncSummary | null>(null);
@@ -21,7 +25,11 @@ export default function OfflineCenter() {
       loadLastSyncSummary(),
     ]);
     setCount(queue.length);
+    setProperties(queue.filter((item) => item.entity === 'property').length);
+    setMessages(queue.filter((item) => item.entity === 'message').length);
+    setAppointments(queue.filter((item) => item.entity === 'appointment').length);
     setFailed(queue.filter((item) => item.status === 'failed' && item.failureKind === 'transient').length);
+    setPermanent(queue.filter((item) => item.failureKind === 'permanent').length);
     setConflicts(queue.filter((item) => item.failureKind === 'conflict').length);
     setFieldPending(fieldObservations + fieldSessions);
     setLastSync(last);
@@ -31,26 +39,25 @@ export default function OfflineCenter() {
 
   return <Screen>
     <Title>مزامنة سند الخفيفة</Title>
-
     <Card>
-      <Body>عقارات في الطابور: {count} · ميدان: {fieldPending}</Body>
-      <Body>أخطاء مؤقتة: {failed} · تعارضات محمية: {conflicts}</Body>
-      <Body>سند يحاول المزامنة تلقائيًا عند فتح التطبيق أو الرجوع إليه، ويستخدم تدرجًا زمنيًا للمحاولات حتى لا يستهلك الشبكة أو البطارية بلا داعٍ.</Body>
+      <Body>إجمالي الطابور: {count} · الميدان: {fieldPending}</Body>
+      <Caption>عقارات {properties} · رسائل {messages} · مواعيد {appointments}</Caption>
+      <Caption>أخطاء مؤقتة {failed} · تعارضات {conflicts} · أخطاء تحتاج تدخل {permanent}</Caption>
+      <Body>سند يزامن تلقائيًا عند فتح التطبيق أو العودة إليه، ويوقف إعادة المحاولة إذا كان الخطأ صلاحية أو بيانات حتى لا يهدر الشبكة والبطارية.</Body>
       <Button label="مزامنة الكل الآن" onPress={async () => {
         try {
           const r = await syncPendingWork('manual');
           setMessage(r.skipped
             ? 'ماكو بيانات معلقة للمزامنة.'
-            : 'عقارات: تمت ' + r.propertySynced + ' · متبقي ' + r.propertyRemaining + ' | ميدان: تمت ' + r.fieldSynced + ' · متبقي ' + r.fieldRemaining);
+            : 'الطابور: تمت ' + r.queueSynced + ' · متبقي ' + r.queueRemaining + ' | الميدان: تمت ' + r.fieldSynced + ' · متبقي ' + r.fieldRemaining);
         } catch (error) {
           setMessage(error instanceof Error ? error.message : 'تعذرت المزامنة');
         }
         await load();
       }} />
-
-      {failed ? <Button label="إعادة محاولة أخطاء العقارات المؤقتة" variant="secondary" onPress={async () => {
+      {failed ? <Button label="إعادة محاولة الأخطاء المؤقتة" variant="secondary" onPress={async () => {
         const pending = await retryTransientOfflineMutations();
-        setMessage('تمت إعادة تهيئة الأخطاء المؤقتة. العمليات الجاهزة للمحاولة: ' + pending);
+        setMessage('تمت إعادة تهيئة الأخطاء المؤقتة. الجاهز للمحاولة: ' + pending);
         await load();
       }} /> : null}
     </Card>
