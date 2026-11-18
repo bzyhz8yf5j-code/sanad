@@ -14,7 +14,8 @@
 - [x] Technical retention/account-deletion documentation
 - [x] Release gate blocks missing public legal/support URLs
 - [ ] Deploy and verify request-account-deletion Edge Function
-- [ ] Administrative review/finalization workflow for deletion requests
+- [x] Administrative review/block workflow for deletion requests
+- [ ] Final deletion/anonymization workflow after retention rules are approved
 - [ ] Final legal review of privacy/terms/retention
 - [ ] Publish real HTTPS privacy/terms/support pages
 - [ ] Verify/enable periodic Push worker Scheduler when first device is registered
