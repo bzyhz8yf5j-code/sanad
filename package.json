@@ -31,7 +31,9 @@
     "cloud:check": "npm run check && npm run sdk57:check && npm run native:readiness && npm run workflow:check",
     "release:gate": "node scripts/production-release-gate.mjs",
     "test:push": "node scripts/test-push-delivery.mjs",
-    "test:report": "node scripts/test-report-pdf.mjs"
+    "test:report": "node scripts/test-report-pdf.mjs",
+    "brand:generate": "node scripts/generate-brand-assets.mjs",
+    "postinstall": "node scripts/generate-brand-assets.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
