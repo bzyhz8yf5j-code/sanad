@@ -6,6 +6,15 @@ import { parseNotificationData, routeForTarget } from '../src/domain/deepLinks';
 import { bindNativeAuthRefresh } from '../src/lib/supabase';
 import { bindForegroundSync } from '../src/services/syncCoordinator';
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 function openNotification(data: Record<string, unknown> | undefined) {
   const route = routeForTarget(parseNotificationData(data));
   if (route !== '/') router.push(route as any);
@@ -16,13 +25,13 @@ export default function RootLayout() {
     const unbindAuthRefresh = bindNativeAuthRefresh();
     const unbindForegroundSync = bindForegroundSync();
 
-    Notifications.getLastNotificationResponseAsync().then((r) => {
-      const data = r?.notification.request.content.data as Record<string, unknown> | undefined;
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      const data = response?.notification.request.content.data as Record<string, unknown> | undefined;
       if (data) openNotification(data);
     });
 
-    const sub = Notifications.addNotificationResponseReceivedListener((r) => {
-      openNotification(r.notification.request.content.data as Record<string, unknown> | undefined);
+    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
+      openNotification(response.notification.request.content.data as Record<string, unknown> | undefined);
     });
 
     return () => {
@@ -32,5 +41,8 @@ export default function RootLayout() {
     };
   }, []);
 
-  return <><StatusBar style="light" /><Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#061425' }, animation: 'fade_from_bottom' }} /></>;
+  return <>
+    <StatusBar style="light" />
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#061425' }, animation: 'fade_from_bottom' }} />
+  </>;
 }

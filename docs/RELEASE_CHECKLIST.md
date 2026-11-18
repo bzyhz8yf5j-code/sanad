@@ -4,7 +4,6 @@
 - [x] Professional approval workflow
 - [x] Media ordering/cover validation
 - [x] Advanced filter domain logic
-- [x] Notification adapter skeleton
 - [x] Report adapter skeleton
 - [x] Rate-limit domain + server table
 - [x] RLS baseline
@@ -18,21 +17,24 @@
 - [x] Offline messages with stable client IDs
 - [x] Offline appointment requests with stable client IDs
 - [x] Foreground/startup sync coordinator
-- [x] iPhone device-registration step in EAS workflow
-- [x] EAS owner aligned with the GitHub-triggered Expo project owner
-- [x] iOS prebuild added to EAS source checks
-- [x] GitHub Actions reduced to main/manual runs
 - [x] Successful EAS iOS Simulator Development Build
 - [x] Low-cost EAS source-check workflow without native build
 - [x] Production release gate script
-- [ ] Expo doctor on the final release revision
+- [x] Push queue worker with Expo ticket handling
+- [x] Push HTTP retry classification for 429/5xx only
+- [x] Push receipt sweep logic
+- [x] DeviceNotRegistered token disabling
+- [x] Push token lifecycle on login/logout
+- [x] Push delivery pure logic tests
+- [ ] Verify/enable periodic Push worker Scheduler
+- [ ] Physical Push end-to-end delivery test
+- [ ] Expo doctor on final release revision
 - [ ] Supabase local reset + RLS integration tests
 - [ ] Licensed production Map Style URL
 - [ ] Licensed CAD provider
 - [ ] PDF renderer
-- [ ] Push worker end-to-end delivery test
 - [ ] Physical iPhone device enrollment + approval
 - [ ] First physical iPhone Development Build
 - [ ] Device QA + accessibility + Arabic typography QA
-- [ ] Approved Sanad app icon/splash in the native project
+- [ ] Approved Sanad app icon/splash in native project
 - [ ] Privacy/terms/store compliance

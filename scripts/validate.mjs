@@ -6,13 +6,13 @@ const root = process.cwd();
 const required = [
   'package.json','app.json','app/_layout.tsx','app/(tabs)/geo.tsx','app/auth/login.tsx','app/auth/register.tsx','app/offices/apply.tsx',
   'src/domain/alignment.ts','src/domain/risk.ts','src/domain/professionalApproval.ts','src/domain/media.ts','src/domain/offlineSync.ts','src/domain/deepLinks.ts',
-  'src/services/auth.ts','src/services/offices.ts','src/services/messaging.ts','src/services/sharing.ts','src/services/propertyMedia.ts',
+  'src/services/auth.ts','src/services/offices.ts','src/services/messaging.ts','src/services/sharing.ts','src/services/propertyMedia.ts','src/services/notifications.ts',
   'supabase/migrations/20260827185300_sanad_core_001_006.sql','supabase/migrations/20260827185409_sanad_core_007_013.sql',
   'supabase/migrations/20260827185440_sanad_core_014_020.sql','supabase/migrations/20260827185523_sanad_core_021_025.sql',
   'supabase/migrations/20260827185553_sanad_core_026_029.sql','supabase/migrations/20260827190616_live_backend_hardening_030.sql',
   'supabase/migrations/20260827190635_performance_indexes_031.sql',
   'supabase/functions/review-professional-application/index.ts','supabase/functions/resolve-transaction/index.ts',
-  'supabase/functions/create-office-invitation/index.ts','supabase/functions/process-notification-queue/index.ts','supabase/functions/check-map-source/index.ts',
+  'supabase/functions/create-office-invitation/index.ts','supabase/functions/process-notification-queue/index.ts','supabase/functions/send-notification/index.ts','supabase/functions/_shared/expoPush.ts','supabase/functions/check-map-source/index.ts',
   'supabase/functions/submit-office-application/index.ts','supabase/functions/review-office-application/index.ts','supabase/functions/start-conversation/index.ts',
   'supabase/functions/create-share-link/index.ts','supabase/functions/resolve-share-link/index.ts',
   'docs/SUPABASE_LIVE_BASELINE.md','app/field.tsx','src/services/fieldMode.ts','src/components/SanadMap.native.tsx','supabase/migrations/20260828015457_native_field_mode_033.sql','supabase/migrations/20260828015621_native_field_rpc_hardening_034.sql','supabase/migrations/20260828015715_native_field_performance_035.sql','docs/NATIVE_BUILD.md'

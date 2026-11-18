@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { refreshPushRegistrationIfAuthorized, unregisterPushForCurrentDevice } from './notifications';
 
 export async function signUp(email: string, password: string, displayName: string) {
   if (!supabase) throw new Error('backend_unavailable');
@@ -8,18 +9,24 @@ export async function signUp(email: string, password: string, displayName: strin
     options: { data: { display_name: displayName.trim() } },
   });
   if (error) throw error;
+  if (data.session) void refreshPushRegistrationIfAuthorized().catch(() => {});
   return data;
 }
 
 export async function signIn(email: string, password: string) {
   if (!supabase) throw new Error('backend_unavailable');
-  const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.trim().toLowerCase(),
+    password,
+  });
   if (error) throw error;
+  void refreshPushRegistrationIfAuthorized().catch(() => {});
   return data;
 }
 
 export async function signOut() {
   if (!supabase) return;
+  await unregisterPushForCurrentDevice().catch(() => {});
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
@@ -28,7 +35,11 @@ export async function getCurrentAccount() {
   if (!supabase) return null;
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return null;
-  const { data: profile, error } = await supabase.from('profiles').select('id,display_name,phone,role').eq('id', auth.user.id).single();
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('id,display_name,phone,role')
+    .eq('id', auth.user.id)
+    .single();
   if (error) throw error;
   return { user: auth.user, profile };
 }
