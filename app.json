@@ -49,7 +49,8 @@
         "NSLocationWhenInUseUsageDescription": "يستخدم سند موقعك أثناء العمل الميداني لتحديد موقع العقار وربط الملاحظات به.",
         "NSCameraUsageDescription": "يستخدم سند الكاميرا لالتقاط صور العقارات والعمل الميداني.",
         "NSPhotoLibraryUsageDescription": "يستخدم سند مكتبة الصور لإرفاق صور ومستندات العقار."
-      }
+      },
+      "icon": "./assets/icon.png"
     },
     "android": {
       "package": "iq.sanad.app",
@@ -58,7 +59,12 @@
         "ACCESS_FINE_LOCATION",
         "CAMERA",
         "POST_NOTIFICATIONS"
-      ]
+      ],
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#061425"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -75,6 +81,12 @@
     },
     "updates": {
       "url": "https://u.expo.dev/d8021acb-3d10-41f5-8623-f41ac8e64e8b"
+    },
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#061425"
     }
   }
 }
