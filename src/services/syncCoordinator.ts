@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState } from 'react-native';
 import { pendingFieldObservationCount, pendingFieldSessionCount, syncPendingFieldObservations } from './fieldMode';
-import { loadOfflineQueue, syncOfflinePropertyQueue } from './offlineSync';
+import { loadOfflineQueue, syncOfflineQueue } from './offlineSync';
 
 const SYNC_META_KEY = 'sanad.sync.last.v1';
 
@@ -10,8 +10,8 @@ export type SyncSource = 'startup' | 'foreground' | 'manual';
 export interface SyncSummary {
   completedAt: string;
   source: SyncSource;
-  propertySynced: number;
-  propertyRemaining: number;
+  queueSynced: number;
+  queueRemaining: number;
   fieldSynced: number;
   fieldRemaining: number;
   skipped: boolean;
@@ -26,33 +26,33 @@ export async function loadLastSyncSummary(): Promise<SyncSummary | null> {
 }
 
 async function runSync(source: SyncSource): Promise<SyncSummary> {
-  const [propertyQueue, fieldObservations, fieldSessions] = await Promise.all([
+  const [queue, fieldObservations, fieldSessions] = await Promise.all([
     loadOfflineQueue(),
     pendingFieldObservationCount(),
     pendingFieldSessionCount(),
   ]);
 
-  if (!propertyQueue.length && fieldObservations + fieldSessions === 0) {
+  if (!queue.length && fieldObservations + fieldSessions === 0) {
     return {
       completedAt: new Date().toISOString(),
       source,
-      propertySynced: 0,
-      propertyRemaining: 0,
+      queueSynced: 0,
+      queueRemaining: 0,
       fieldSynced: 0,
       fieldRemaining: 0,
       skipped: true,
     };
   }
 
-  let propertySynced = 0;
-  let propertyRemaining = propertyQueue.length;
+  let queueSynced = 0;
+  let queueRemaining = queue.length;
   let fieldSynced = 0;
   let fieldRemaining = fieldObservations + fieldSessions;
 
-  if (propertyQueue.length) {
-    const property = await syncOfflinePropertyQueue();
-    propertySynced = property.synced;
-    propertyRemaining = property.remaining;
+  if (queue.length) {
+    const result = await syncOfflineQueue();
+    queueSynced = result.synced;
+    queueRemaining = result.remaining;
   }
 
   if (fieldObservations + fieldSessions > 0) {
@@ -65,8 +65,8 @@ async function runSync(source: SyncSource): Promise<SyncSummary> {
   const summary: SyncSummary = {
     completedAt: new Date().toISOString(),
     source,
-    propertySynced,
-    propertyRemaining,
+    queueSynced,
+    queueRemaining,
     fieldSynced,
     fieldRemaining,
     skipped: false,

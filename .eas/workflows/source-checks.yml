@@ -1,0 +1,18 @@
+name: Sanad Source Checks
+
+on:
+  push:
+    branches: ['check/eas-source']
+
+jobs:
+  checks:
+    name: Source, TypeScript and iOS prebuild checks
+    environment: development
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - run: npm run check
+      - run: npm run typecheck
+      - run: npm run native:check
+      - run: npm run workflow:check
+      - run: npm run native:ios-preflight

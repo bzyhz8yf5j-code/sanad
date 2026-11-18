@@ -1,49 +1,53 @@
-# سند — حالة البناء v0.12.0 / Native Readiness Batch
+# سند — حالة البناء v0.13.0
 
-## الحالة الحالية
+## الحالة المؤكدة
 
-- Expo/EAS project ID: d8021acb-3d10-41f5-8623-f41ac8e64e8b.
-- GitHub-triggered Expo workflow reports the project under @engmohammad92s-team/sanad; app config owner has been aligned to that owner.
+- Expo/EAS project: `@engmohammad92s-team/sanad`.
+- EAS project ID: `d8021acb-3d10-41f5-8623-f41ac8e64e8b`.
 - Supabase live backend connected.
-- EAS public client environment is embedded in build profiles.
-- EAS workflow for iOS simulator development build is on branch build/eas-development.
-- Simulator workflow now performs an iOS prebuild before starting the more expensive native build.
-- Physical iPhone workflow includes Expo Apple device registration request and ad-hoc provisioning refresh before the Development Client build.
-- GitHub target repository: bzyhz8yf5j-code/sanad and remains separate from other projects.
-- GitHub Actions PR runs were disabled to reduce CI cost/churn; quality runs remain available manually and on relevant changes to main.
-- Reproducible npm dependency lockfile is included.
-- Core Arabic RTL interface is implemented with the navy/gold direction.
-- Account access uses real Supabase Auth only.
-- Office workflow is connected end-to-end: dashboard, property draft, media, risks, readiness blockers, publishing and report request.
-- Device diagnostics covers EAS, Supabase health, map configuration, Push permission, Offline queues and last local sync.
-- Production map runtime does not fall back to public demo tiles.
-- Property Offline queue uses retry backoff, a retry ceiling and manual retry for transient failures while conflicts remain protected.
-- Pending property/field work is coordinated automatically at startup and when the app returns to foreground, without adding a new networking dependency.
+- GitHub repository: `bzyhz8yf5j-code/sanad`.
+- أول iOS Simulator Development Build نجح بالكامل بعد تصحيح EAS owner.
+- Source/TypeScript/Native checks وiOS prebuild نجحت في السحابة.
+- مسار iPhone الحقيقي موجود ويوقف قبل البناء إلى أن يتم تسجيل الجهاز واعتماده في Expo/Apple.
+- GitHub Actions لا يعمل على كل PR لتقليل الاستهلاك؛ الفحص الأساسي أصبح عبر EAS Source Checks بدون Xcode Build.
 
-## First cloud build result
+## ما أضيف في v0.13.0
 
-The first GitHub-triggered EAS simulator run reached:
-- Source/native checks: SUCCESS.
-- iOS simulator build job: ERROR.
+- Device diagnostics داخل التطبيق.
+- حماية Production من demo map tiles.
+- Offline retry backoff وحد أقصى للمحاولات.
+- مزامنة تلقائية عند startup/foreground.
+- Offline support للعقارات والرسائل وطلبات المواعيد.
+- UUID ثابت للرسائل والمواعيد لمنع التكرار.
+- صفحة طلب موعد معاينة مرتبطة بالعقار والمكتب.
+- مركز Offline يعرض العقارات/الرسائل/المواعيد/الميدان والأخطاء الدائمة.
+- Production release gate يمنع بناء نسخة إنتاجية ناقصة من الهوية أو الخريطة.
+- EAS Source Checks workflow لاختبار الدفعات الكبيرة بدون تكلفة Native Build في كل مرة.
 
-The Expo-generated GitHub status identifies the project as @engmohammad92s-team/sanad, while the previous app config owner was eng.mohammad92. This mismatch is corrected in this batch before spending another build.
+## نتيجة iOS
 
-## Verification strategy
+### Simulator
+SUCCESS
 
-To reduce cost:
-1. Make large consolidated changes on the PR branch.
-2. Run local/static checks before moving the EAS trigger branch.
-3. Move build/eas-development once per completed batch.
-4. EAS runs source/type/native checks plus iOS prebuild before native compilation.
-5. Do not retry failed cloud builds without a concrete config/code change.
+### Physical iPhone
+المسار وصل إلى خطوة تسجيل الجهاز. Expo يتطلب تسجيل iPhone والموافقة على enrollment قبل بناء internal development build. لم يبدأ Xcode Build للجهاز الحقيقي، لذلك لم تُصرف محاولة Native Build غير ضرورية.
 
-## Remaining high-priority release work
+## سياسة تقليل المصاريف
 
-1. Re-run one simulator build after this consolidated batch.
-2. If the build reaches native compilation and still fails, inspect Expo build logs before any dependency upgrade.
-3. Run the physical iPhone workflow only after Apple credentials/device prerequisites are ready.
-4. Execute docs/NATIVE_QA.md on a real iPhone.
-5. Add the officially approved Sanad icon/splash assets.
-6. Configure a licensed production Map Style URL.
-7. Finish end-to-end Push delivery testing.
-8. Keep AI assistant and licensed CAD integration as separate implementation batches until real providers are connected.
+1. دفعات كبيرة على فرع واحد.
+2. Commit واحد أو عدد محدود لكل دفعة.
+3. EAS Source Checks للـTypeScript/native config/prebuild.
+4. Native Build فقط عند نقاط الإصدار أو بعد تغيير Native حقيقي.
+5. عدم إعادة أي Build فاشل بدون سبب واضح وتعديل فعلي.
+6. Production gate قبل أي build/submit إنتاجي.
+
+## المتبقي عالي الأولوية
+
+1. تسجيل iPhone واعتماد الجهاز داخل Expo عند الجاهزية.
+2. تشغيل أول Physical iPhone Development Build.
+3. تنفيذ `docs/NATIVE_QA.md` على جهاز حقيقي.
+4. إضافة الأيقونة الرسمية المعتمدة لسند وSplash.
+5. ضبط Licensed Production Map Style URL.
+6. إكمال Push worker end-to-end.
+7. ربط CAD provider مرخّص.
+8. تنفيذ مساعد AI العقاري الحقيقي كمجموعة مستقلة.
