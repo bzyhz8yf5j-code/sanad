@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { canUseDevelopmentMapFallback, config, hasConfiguredMapStyle, hasSupabaseConfig, isProductionRuntime } from '../lib/config';
+import { canUseDevelopmentMapFallback, config, hasConfiguredMapStyle, hasSupabaseConfig, isProductionRuntime, mapProviderLabel } from '../lib/config';
 import { pendingFieldObservationCount, pendingFieldSessionCount } from './fieldMode';
 import { loadOfflineQueue } from './offlineSync';
 import { loadLastSyncSummary } from './syncCoordinator';
@@ -66,7 +66,7 @@ export async function runDeviceDiagnostics(): Promise<DeviceDiagnostics> {
     label: 'مصدر الخرائط',
     status: hasConfiguredMapStyle ? 'pass' : isProductionRuntime ? 'fail' : 'warn',
     detail: hasConfiguredMapStyle
-      ? 'تم ضبط Map Style مخصص'
+      ? 'تم ضبط Map Style · ' + mapProviderLabel()
       : canUseDevelopmentMapFallback
         ? 'لا يوجد Map Style مخصص؛ مسموح fallback تجريبي خارج الإنتاج فقط'
         : 'وضع الإنتاج يمنع fallback التجريبي حتى يتم ضبط مصدر مرخّص',

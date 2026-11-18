@@ -18,7 +18,9 @@
       "env": {
         "EXPO_PUBLIC_APP_ENV": "development",
         "EXPO_PUBLIC_SUPABASE_URL": "https://gpchnprurzdnrmjanawq.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_J1XZbu-6rz7ALuyKtMKTTA_eVKexJtt"
+        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_J1XZbu-6rz7ALuyKtMKTTA_eVKexJtt",
+        "EXPO_PUBLIC_MAP_STYLE_URL": "https://tiles.openfreemap.org/styles/liberty",
+        "EXPO_PUBLIC_MAP_PROVIDER": "openfreemap"
       }
     },
     "preview": {
@@ -34,7 +36,9 @@
       "env": {
         "EXPO_PUBLIC_APP_ENV": "preview",
         "EXPO_PUBLIC_SUPABASE_URL": "https://gpchnprurzdnrmjanawq.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_J1XZbu-6rz7ALuyKtMKTTA_eVKexJtt"
+        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_J1XZbu-6rz7ALuyKtMKTTA_eVKexJtt",
+        "EXPO_PUBLIC_MAP_STYLE_URL": "https://tiles.openfreemap.org/styles/liberty",
+        "EXPO_PUBLIC_MAP_PROVIDER": "openfreemap"
       }
     },
     "production": {
@@ -50,7 +54,9 @@
       "env": {
         "EXPO_PUBLIC_APP_ENV": "production",
         "EXPO_PUBLIC_SUPABASE_URL": "https://gpchnprurzdnrmjanawq.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_J1XZbu-6rz7ALuyKtMKTTA_eVKexJtt"
+        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_J1XZbu-6rz7ALuyKtMKTTA_eVKexJtt",
+        "EXPO_PUBLIC_MAP_STYLE_URL": "https://tiles.openfreemap.org/styles/liberty",
+        "EXPO_PUBLIC_MAP_PROVIDER": "openfreemap"
       }
     },
     "development-simulator": {

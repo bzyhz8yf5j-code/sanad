@@ -1,54 +1,38 @@
-# سند — حالة البناء v0.14.0
+# سند — حالة البناء v0.15.0
 
 ## الحالة المؤكدة
 
-- Expo/EAS project: `@engmohammad92s-team/sanad`.
-- EAS project ID: `d8021acb-3d10-41f5-8623-f41ac8e64e8b`.
-- Supabase live backend connected.
-- GitHub repository: `bzyhz8yf5j-code/sanad`.
+- Expo/EAS: `@engmohammad92s-team/sanad`.
+- GitHub: `bzyhz8yf5j-code/sanad`.
 - iOS Simulator Development Build: SUCCESS.
-- EAS Source Checks بدون Native Build: SUCCESS في v0.13.
-- Physical iPhone workflow متوقف قبل Xcode Build على خطوة تسجيل الجهاز/Apple approval.
-- GitHub Actions لا يعمل على كل PR لتقليل الاستهلاك.
+- EAS Source Checks: SUCCESS حتى v0.14.
+- Physical iPhone: متوقف قبل Xcode على تسجيل الجهاز/Apple approval.
+- Supabase project كان `INACTIVE` وتم طلب Restore؛ آخر حالة أثناء هذه الدفعة `COMING_UP`.
+- v0.14 Push code مدموج على `main`، ونشر Edge Functions ينتظر Supabase `ACTIVE_HEALTHY`.
 
-## v0.14.0 — Push Delivery Hardening
+## v0.15 — Production Base Map
 
-- Expo Push send batches محددة إلى 100.
-- HTTP 429 و5xx/network فقط تدخل retry/backoff.
-- Push tickets تفحص لكل جهاز.
-- `DeviceNotRegistered` يعطل الجهاز بدل الاستمرار بالإرسال له.
-- `MessageRateExceeded` يعيد الجهاز المتأثر فقط.
-- الإرسال الجزئي يحفظ tickets ويعيد فقط الأجهزة المؤقتة الفشل.
-- Push receipts تُفحص من worker runs التالية وتوثق داخل payload.
-- Token يرتبط بالحساب الحالي ويتعطل عند sign-out.
-- بعد sign-in يعاد تفعيل التسجيل تلقائيًا فقط إذا الإذن سبق ومنح.
-- Foreground notifications لها handler واضح.
-- `send-notification` يتحقق من payload ويعيد نتيجة dedupe واضحة.
-- Push logic لديه اختبار مستقل `npm run test:push`.
+- OpenFreeMap Liberty أصبح Base Map مضبوطًا في EAS development/preview/production.
+- لا يحتاج API key، مما يقلل الكلفة التشغيلية الحالية.
+- MapLibre demo tiles لم تعد مطلوبة في EAS profiles.
+- الخريطة تعرض loading/error/retry state بدل شاشة فارغة.
+- واجهة المركز الجغرافي توضح أن Base Map سياقية وغير رسمية.
+- حدود القطع والمرتسمات والبيانات القانونية تبقى مصادر منفصلة مرخّصة داخل سند.
+- Release Gate يمنع HTTP وغير HTTPS، ويمنع `demotiles.maplibre.org`.
+- Offline base-map packs غير مفعلة تلقائيًا.
+- قبل الإطلاق الوطني الواسع يبقى قرار SLA/self-hosting مطلوبًا لأن OpenFreeMap public instance لا يقدم SLA.
 
-## ما لم يثبت بعد
+## Release Gate المتبقي
 
-- لم يظهر Scheduler/Cron للـPush worker في المستودع.
-- Supabase logs لآخر 24 ساعة لم تعرض استدعاءات worker وقت الفحص.
-- لذلك الكود صار جاهزًا، لكن delivery الدوري end-to-end لا يعتبر مثبتًا قبل تفعيل/توثيق Scheduler واختباره على iPhone حقيقي.
-- Secret-key migration مؤجلة حتى نحدد caller/Scheduler الحالي حتى لا نكسر المصادقة الحية.
+بعد ضبط خريطة Production، أكبر blocker بصري مباشر هو:
+- الأيقونة الرسمية/Splash المعتمدة لسند.
 
-## سياسة تقليل المصاريف
+لم يتم العثور على ملف صورة شعار/أيقونة سند المعتمد داخل Library في البحث الحالي، لذلك لم يتم استبداله بصورة تخمينية.
 
-1. دفعات كبيرة على فرع واحد.
-2. EAS Source Checks قبل أي Native Build.
-3. Native Build فقط عند تغييرات native أو نقاط إصدار.
-4. عدم إعادة Build فاشل بلا تعديل واضح.
-5. لا نضيف خدمة Push خارجية مدفوعة؛ نستفيد من Expo Push + Supabase الموجودين.
-6. Production release gate يبقى مانعًا للنشر حتى اكتمال الهوية والخريطة.
+## سياسة الكلفة
 
-## المتبقي عالي الأولوية
-
-1. فحص v0.14 عبر EAS Source Checks.
-2. نشر Edge Functions المحسنة بعد نجاح الفحص.
-3. تفعيل/توثيق Scheduler للـPush worker.
-4. اختبار Push فعلي بعد تسجيل iPhone.
-5. الأيقونة الرسمية + Splash.
-6. Licensed Production Map Style.
-7. CAD provider مرخّص.
-8. مساعد AI العقاري الحقيقي كدفعة مستقلة.
+- MapLibre مفتوح المصدر.
+- OpenFreeMap public base map بدون API key.
+- لا Native Build لهذه الدفعة؛ Source Checks فقط.
+- لا Offline tile bulk download حاليًا.
+- لا إضافة مزود خرائط مدفوع قبل الحاجة الفعلية/SLA.
