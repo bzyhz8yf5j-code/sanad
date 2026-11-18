@@ -18,7 +18,7 @@
 - [x] OpenFreeMap attribution/context disclosure
 - [x] Map load/error/retry UI
 - [ ] Verify/enable periodic Push worker Scheduler
-- [ ] Deploy v0.14 Push Edge Functions after Supabase restore
+- [x] Deploy v0.14 Push Edge Functions after Supabase restore
 - [ ] Physical Push end-to-end delivery test
 - [ ] Supabase local reset + RLS integration tests
 - [ ] National-launch map SLA/self-hosting decision

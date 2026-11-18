@@ -7,8 +7,9 @@
 - iOS Simulator Development Build: SUCCESS.
 - EAS Source Checks: SUCCESS حتى v0.14.
 - Physical iPhone: متوقف قبل Xcode على تسجيل الجهاز/Apple approval.
-- Supabase project كان `INACTIVE` وتم طلب Restore؛ آخر حالة أثناء هذه الدفعة `COMING_UP`.
-- v0.14 Push code مدموج على `main`، ونشر Edge Functions ينتظر Supabase `ACTIVE_HEALTHY`.
+- Supabase project عاد إلى `ACTIVE_HEALTHY` بعد Restore ناجح.
+- v0.14 Push code مدموج على `main`.
+- `send-notification` و`process-notification-queue` منشورتان حيًا على Supabase بالإصدار 4.
 
 ## v0.15 — Production Base Map
 
