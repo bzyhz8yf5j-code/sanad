@@ -64,7 +64,7 @@ async function sweepReceipts(admin: any) {
   const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
   const { data: rows, error } = await admin
     .from('notification_jobs')
-    .select('id,payload,updated_at')
+    .select('id,payload,updated_at,attempts,max_attempts,last_error')
     .eq('channel', 'push')
     .eq('status', 'sent')
     .gte('updated_at', since)
@@ -125,6 +125,8 @@ async function sweepReceipts(admin: any) {
     const previousIds = new Set(previous.map((r) => r.id));
     const additions: Array<{ id: string; status: string; error?: string }> = [];
     const disableIds: string[] = [];
+    const retryIds: string[] = [];
+    const permanentReceiptErrors: string[] = [];
 
     for (const item of found) {
       if (previousIds.has(item.id)) continue;
@@ -136,6 +138,8 @@ async function sweepReceipts(admin: any) {
         ...(errorCode ? { error: errorCode } : {}),
       });
       if (action === 'disable_device') disableIds.push(item.deviceId);
+      else if (action === 'retry') retryIds.push(item.deviceId);
+      else if (action === 'permanent') permanentReceiptErrors.push(errorCode || 'receipt_permanent_error');
       checked++;
     }
 
@@ -143,6 +147,32 @@ async function sweepReceipts(admin: any) {
     const results = [...previous, ...additions];
     const ticketCount = (payload.expoTickets ?? []).length;
     const allResolved = results.length >= ticketCount;
+    if (retryIds.length) {
+      const attempts = (job.attempts ?? 0) + 1;
+      const terminal = attempts >= (job.max_attempts ?? 5);
+      const retryPayload: JobPayload = {
+        ...payload,
+        receiptResults: results,
+        remainingDeviceIds: [...new Set(retryIds)],
+        receiptCheckAfter: undefined,
+        receiptCheckedAt: undefined,
+      };
+      await admin
+        .from('notification_jobs')
+        .update({
+          status: terminal ? 'failed' : 'pending',
+          attempts,
+          next_attempt_at: retryAt(attempts),
+          payload: retryPayload,
+          last_error: terminal ? 'receipt_retry_exhausted' : 'receipt_message_rate_exceeded',
+          locked_at: null,
+          locked_by: null,
+          updated_at: nowIso(),
+        })
+        .eq('id', job.id);
+      continue;
+    }
+
     const nextPayload: JobPayload = {
       ...payload,
       receiptResults: results,
@@ -153,7 +183,13 @@ async function sweepReceipts(admin: any) {
 
     await admin
       .from('notification_jobs')
-      .update({ payload: nextPayload, updated_at: nowIso() })
+      .update({
+        payload: nextPayload,
+        last_error: permanentReceiptErrors.length
+          ? ('receipt:' + permanentReceiptErrors.join('|')).slice(0, 500)
+          : job.last_error,
+        updated_at: nowIso(),
+      })
       .eq('id', job.id);
   }
 
