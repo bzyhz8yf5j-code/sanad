@@ -1,39 +1,43 @@
-# سند — حالة البناء v0.15.0
+# سند — حالة البناء v0.16.0
 
-## الحالة المؤكدة
+## المنجز قبل هذه الدفعة
 
-- Expo/EAS: `@engmohammad92s-team/sanad`.
-- GitHub: `bzyhz8yf5j-code/sanad`.
 - iOS Simulator Development Build: SUCCESS.
-- EAS Source Checks: SUCCESS حتى v0.14.
-- Physical iPhone: متوقف قبل Xcode على تسجيل الجهاز/Apple approval.
-- Supabase project عاد إلى `ACTIVE_HEALTHY` بعد Restore ناجح.
-- v0.14 Push code مدموج على `main`.
-- `send-notification` و`process-notification-queue` منشورتان حيًا على Supabase بالإصدار 4.
+- EAS Source Checks: SUCCESS حتى v0.15.
+- Supabase: ACTIVE_HEALTHY.
+- Push Edge Functions v4 منشورة.
+- OpenFreeMap base map مضبوط للإنتاج مع release guards.
+- Physical iPhone ما زال ينتظر تسجيل الجهاز/Apple approval.
 
-## v0.15 — Production Base Map
+## v0.16 — Account & Privacy Readiness
 
-- OpenFreeMap Liberty أصبح Base Map مضبوطًا في EAS development/preview/production.
-- لا يحتاج API key، مما يقلل الكلفة التشغيلية الحالية.
-- MapLibre demo tiles لم تعد مطلوبة في EAS profiles.
-- الخريطة تعرض loading/error/retry state بدل شاشة فارغة.
-- واجهة المركز الجغرافي توضح أن Base Map سياقية وغير رسمية.
-- حدود القطع والمرتسمات والبيانات القانونية تبقى مصادر منفصلة مرخّصة داخل سند.
-- Release Gate يمنع HTTP وغير HTTPS، ويمنع `demotiles.maplibre.org`.
-- Offline base-map packs غير مفعلة تلقائيًا.
-- قبل الإطلاق الوطني الواسع يبقى قرار SLA/self-hosting مطلوبًا لأن OpenFreeMap public instance لا يقدم SLA.
+- Migration حيّة ومسجلة رسميًا: `20261118015656_account_deletion_requests`.
+- RLS يسمح للمستخدم بقراءة طلبه فقط، والعميل لا يملك insert/update/delete مباشر.
+- مسار طلب حذف/إلغاء الحساب عبر Edge Function موثقة بالجلسة.
+- بدء طلب الحذف يعطل Push devices للحساب.
+- واجهة داخل الحساب لسياسة الخصوصية وشروط الاستخدام وحذف الحساب.
+- شاشة حذف الحساب تعرض الحالة وملاحظة الاحتفاظ وتسمح بإلغاء الطلب قبل الاكتمال.
+- Privacy/Terms داخل التطبيق هي مسودات تشغيلية وليست اعتمادًا قانونيًا نهائيًا.
+- Release Gate يرفض Production إذا روابط privacy/terms/support العامة غير HTTPS أو مفقودة.
 
-## Release Gate المتبقي
+## قرار الحذف النهائي
 
-بعد ضبط خريطة Production، أكبر blocker بصري مباشر هو:
-- الأيقونة الرسمية/Splash المعتمدة لسند.
+الحذف المباشر لحساب Auth غير مفعل من العميل. قاعدة البيانات تحتوي علاقات معاملات ومكاتب ورسائل وسجلات تدقيق تمنع حذف profile بشكل أعمى. قبل تفعيل الحذف النهائي نحتاج قواعد واضحة لكل سجل: حذف، anonymization، أو احتفاظ مبرر.
 
-لم يتم العثور على ملف صورة شعار/أيقونة سند المعتمد داخل Library في البحث الحالي، لذلك لم يتم استبداله بصورة تخمينية.
+## سياسة تقليل الكلفة
 
-## سياسة الكلفة
+- لا Native Build في v0.16.
+- Source Check واحد بعد تجميع الدفعة.
+- لا Supabase branch مدفوع.
+- Migration واحدة فقط مسجلة في production بعد مراجعة المخطط.
+- لا خدمة قانونية/هوية خارجية مدفوعة مضافة.
 
-- MapLibre مفتوح المصدر.
-- OpenFreeMap public base map بدون API key.
-- لا Native Build لهذه الدفعة؛ Source Checks فقط.
-- لا Offline tile bulk download حاليًا.
-- لا إضافة مزود خرائط مدفوع قبل الحاجة الفعلية/SLA.
+## Release blockers المتبقية
+
+1. نشر وفحص Edge Function حذف الحساب.
+2. مسار إداري لإكمال/تعطيل طلبات الحذف.
+3. النص القانوني النهائي وروابط HTTPS العامة.
+4. الأيقونة الرسمية/Splash.
+5. تسجيل iPhone وبناء Development Build فعلي.
+6. Push end-to-end على جهاز حقيقي.
+7. CAD/PDF/AI حسب أولويات الإطلاق.

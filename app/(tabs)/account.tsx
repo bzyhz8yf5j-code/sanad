@@ -4,6 +4,8 @@ import { router, useFocusEffect } from 'expo-router';
 import { Screen } from '../../src/components/Screen';
 import { Badge, Body, Button, Caption, Card, Divider, Icon, SectionTitle, Title } from '../../src/components/Ui';
 import { getCurrentAccount, signOut } from '../../src/services/auth';
+import { getMyAccountDeletionRequest } from '../../src/services/accountDeletion';
+import { accountDeletionStatusLabel, isAccountDeletionActive } from '../../src/domain/accountDeletion';
 import { listMyOffices } from '../../src/services/offices';
 import { colors } from '../../src/theme/colors';
 
@@ -30,6 +32,7 @@ const officeStatus: Record<string, { label: string; tone: 'success' | 'warning' 
 export default function AccountScreen() {
   const [account, setAccount] = useState<Account | undefined>(undefined);
   const [offices, setOffices] = useState<Office[]>([]);
+  const [deletionRequest, setDeletionRequest] = useState<Awaited<ReturnType<typeof getMyAccountDeletionRequest>>>(null);
   const [message, setMessage] = useState('');
 
   const load = useCallback(async () => {
@@ -37,10 +40,12 @@ export default function AccountScreen() {
       const nextAccount = await getCurrentAccount();
       setAccount(nextAccount);
       setOffices(nextAccount ? await listMyOffices() : []);
+      setDeletionRequest(nextAccount ? await getMyAccountDeletionRequest() : null);
       setMessage('');
     } catch (error) {
       setAccount(null);
       setOffices([]);
+      setDeletionRequest(null);
       setMessage(error instanceof Error ? error.message : 'تعذر تحميل بيانات الحساب');
     }
   }, []);
@@ -113,12 +118,28 @@ export default function AccountScreen() {
       {['admin', 'supervisor'].includes(role) ? <><Divider /><AccountAction icon="account" title="لوحة الإدارة" description="المراجعات وإدارة المصادر والخدمات" onPress={() => router.push('/admin')} /></> : null}
     </Card>
 
+    <SectionTitle>الخصوصية والحساب</SectionTitle>
+    <Card>
+      {deletionRequest && isAccountDeletionActive(deletionRequest.status) ? <>
+        <View style={styles.deletionNotice}>
+          <Badge tone="warning">{accountDeletionStatusLabel(deletionRequest.status)}</Badge>
+          <Caption>عندك طلب حذف حساب فعال. تقدر تتابعه أو تلغيه من شاشة حذف الحساب.</Caption>
+        </View>
+        <Divider />
+      </> : null}
+      <AccountAction icon="shield" title="الخصوصية" description="شنو يخزن سند وشلون تُستخدم البيانات" onPress={() => router.push('/legal/privacy' as any)} />
+      <Divider />
+      <AccountAction icon="shield" title="شروط الاستخدام" description="حدود الخدمة ومسؤولية المحتوى والتحقق" onPress={() => router.push('/legal/terms' as any)} />
+      <Divider />
+      <AccountAction icon="account" title="حذف الحساب" description="ابدأ طلب حذف الحساب وتابع حالته" onPress={() => router.push('/account/delete' as any)} />
+    </Card>
+
     <SectionTitle>الجهاز والاتصال</SectionTitle>
     <Card>
       <AccountAction icon="shield" title="فحص الجهاز والاتصال" description="EAS وSupabase والخرائط والإشعارات والمزامنة" onPress={() => router.push('/diagnostics' as any)} />
     </Card>
 
-    <Button label="تسجيل الخروج" variant="danger" onPress={async () => { await signOut(); setAccount(null); setOffices([]); }} />
+    <Button label="تسجيل الخروج" variant="danger" onPress={async () => { await signOut(); setAccount(null); setOffices([]); setDeletionRequest(null); }} />
   </Screen>;
 }
 
@@ -161,4 +182,5 @@ const styles = StyleSheet.create({
   actionIcon: { width: 42, height: 42, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.navy700 },
   actionCopy: { flex: 1, alignItems: 'flex-end', gap: 2 },
   actionTitle: { color: colors.text, fontSize: 14, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  deletionNotice: { gap: 8, alignItems: 'flex-end' },
 });
