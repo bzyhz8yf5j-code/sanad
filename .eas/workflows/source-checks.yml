@@ -6,7 +6,7 @@ on:
 
 jobs:
   checks:
-    name: Source, TypeScript and iOS prebuild checks
+    name: Source, TypeScript, native and iOS prebuild checks
     environment: development
     steps:
       - uses: eas/checkout

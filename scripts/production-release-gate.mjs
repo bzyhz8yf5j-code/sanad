@@ -22,6 +22,8 @@ const productionMapStyle =
   eas.build?.production?.env?.EXPO_PUBLIC_MAP_STYLE_URL ||
   '';
 add('production_map_style', Boolean(productionMapStyle), productionMapStyle ? 'configured' : 'EXPO_PUBLIC_MAP_STYLE_URL missing');
+add('production_map_https', /^https:\/\//i.test(productionMapStyle), productionMapStyle || 'missing');
+add('production_map_not_demo', !/demotiles\.maplibre\.org/i.test(productionMapStyle), productionMapStyle || 'missing');
 
 console.log('\nSanad production release gate\n');
 for (const check of checks) {

@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Screen } from '../../src/components/Screen';
 import { Badge, Body, Button, Caption, Card, Field, Icon, SectionTitle, Title } from '../../src/components/Ui';
 import { SanadMap } from '../../src/components/SanadMap';
+import { mapProviderLabel } from '../../src/lib/config';
 import { colors } from '../../src/theme/colors';
 
 export default function GeoScreen() {
@@ -24,7 +25,7 @@ export default function GeoScreen() {
 
     <SectionTitle>خريطة العراق</SectionTitle>
     <View style={styles.mapWrap}><SanadMap /><View style={styles.mapBadge}><Badge tone={searched ? 'success' : 'muted'}>{searched ? 'تم تطبيق البحث' : 'وضع الاستكشاف'}</Badge></View></View>
-    <Caption style={styles.disclaimer}>الخريطة الحالية للمعاينة التقنية. البيانات العقارية الرسمية لا تُعتمد إلا بعد ربط مصدر مرخّص ومراجع.</Caption>
+    <Caption style={styles.disclaimer}>خريطة الأساس: {mapProviderLabel()}. تستخدم للسياق الجغرافي فقط؛ حدود القطع والبيانات العقارية الرسمية لا تعتمد إلا من مصدر مرخّص ومراجع داخل سند.</Caption>
 
     {searched ? <Card tone="elevated">
       <View style={styles.resultHead}><View style={styles.resultIcon}><Icon name="land" color="#5CE2D2" size={25} /></View><View style={styles.resultText}><Text style={styles.cardTitle}>نتيجة البحث الأولية</Text><Caption>{[governorate, district, parcel].filter(Boolean).join(' · ')}</Caption></View><Badge tone="warning">بانتظار المصدر</Badge></View>

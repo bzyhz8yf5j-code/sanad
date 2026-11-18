@@ -4,33 +4,24 @@
 - [x] Professional approval workflow
 - [x] Media ordering/cover validation
 - [x] Advanced filter domain logic
-- [x] Report adapter skeleton
-- [x] Rate-limit domain + server table
-- [x] RLS baseline
-- [x] Domain tests
-- [x] TS/TSX syntax validation
-- [x] npm install + lockfile
+- [x] RLS baseline and domain tests
 - [x] Full TypeScript typecheck
 - [x] Device diagnostics screen
-- [x] Production guard against demo map tiles
-- [x] Offline retry backoff + retry ceiling
-- [x] Offline messages with stable client IDs
-- [x] Offline appointment requests with stable client IDs
-- [x] Foreground/startup sync coordinator
+- [x] Offline property/message/appointment sync hardening
 - [x] Successful EAS iOS Simulator Development Build
-- [x] Low-cost EAS source-check workflow without native build
+- [x] Low-cost EAS source-check workflow
 - [x] Production release gate script
-- [x] Push queue worker with Expo ticket handling
-- [x] Push HTTP retry classification for 429/5xx only
-- [x] Push receipt sweep logic
-- [x] DeviceNotRegistered token disabling
-- [x] Push token lifecycle on login/logout
-- [x] Push delivery pure logic tests
+- [x] Push ticket/receipt worker code and tests
+- [x] Production base-map Style URL configured
+- [x] Production map rejects MapLibre demo tiles
+- [x] Production map requires HTTPS
+- [x] OpenFreeMap attribution/context disclosure
+- [x] Map load/error/retry UI
 - [ ] Verify/enable periodic Push worker Scheduler
+- [x] Deploy v0.14 Push Edge Functions after Supabase restore
 - [ ] Physical Push end-to-end delivery test
-- [ ] Expo doctor on final release revision
 - [ ] Supabase local reset + RLS integration tests
-- [ ] Licensed production Map Style URL
+- [ ] National-launch map SLA/self-hosting decision
 - [ ] Licensed CAD provider
 - [ ] PDF renderer
 - [ ] Physical iPhone device enrollment + approval
