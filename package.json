@@ -17,6 +17,7 @@
     "supabase:reset": "supabase db reset",
     "release:readiness": "node scripts/release-readiness.mjs",
     "native:prebuild": "expo prebuild --clean",
+    "native:ios-preflight": "expo prebuild --platform ios --no-install --clean",
     "native:doctor": "expo-doctor",
     "build:dev:ios": "eas build --platform ios --profile development",
     "build:dev:android": "eas build --platform android --profile development",
@@ -56,12 +57,7 @@
     "@maplibre/maplibre-react-native": "11.3.6",
     "expo-crypto": "~57.0.2"
   },
-  "devDependencies": {
-    "@types/react": "~19.2.0",
-    "typescript": "~5.8.3"
-  },
-  "engines": {
-    "node": ">=22.13.0"
-  },
+  "devDependencies": {"@types/react": "~19.2.0", "typescript": "~5.8.3"},
+  "engines": {"node": ">=22.13.0"},
   "packageManager": "npm@10.9.2"
 }

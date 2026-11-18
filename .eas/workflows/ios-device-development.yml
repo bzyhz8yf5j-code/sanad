@@ -15,10 +15,15 @@ jobs:
       - run: npm run typecheck
       - run: npm run native:check
 
+  register_device:
+    name: Register iPhone for development
+    type: apple-device-registration-request
+
   build_ios_device:
     name: Build iOS Development Client
-    needs: [checks]
+    needs: [checks, register_device]
     type: build
     params:
       platform: ios
       profile: development
+      refresh_ad_hoc_provisioning_profile: true

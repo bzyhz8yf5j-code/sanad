@@ -14,6 +14,7 @@ jobs:
       - run: npm run check
       - run: npm run typecheck
       - run: npm run native:check
+      - run: npm run native:ios-preflight
 
   build_ios_simulator:
     name: Build iOS Simulator Development Client

@@ -1,8 +1,18 @@
 name: quality
 on:
-  pull_request:
+  workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - 'app/**'
+      - 'src/**'
+      - 'scripts/**'
+      - 'supabase/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'app.json'
+      - 'eas.json'
+      - '.eas/workflows/**'
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -12,8 +22,7 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+        run: npm ci
       - run: npm run check
       - run: npm run typecheck
       - run: npm run release:readiness
