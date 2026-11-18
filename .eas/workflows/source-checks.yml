@@ -5,8 +5,8 @@ on:
     branches: ['check/eas-source']
 
 jobs:
-  checks:
-    name: Source, TypeScript and iOS prebuild checks
+  source_checks:
+    name: Source, TypeScript and native checks
     environment: development
     steps:
       - uses: eas/checkout
@@ -15,4 +15,12 @@ jobs:
       - run: npm run typecheck
       - run: npm run native:check
       - run: npm run workflow:check
+
+  ios_prebuild:
+    name: iOS prebuild check
+    needs: [source_checks]
+    environment: development
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
       - run: npm run native:ios-preflight
