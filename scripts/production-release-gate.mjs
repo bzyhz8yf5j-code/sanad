@@ -25,6 +25,13 @@ add('production_map_style', Boolean(productionMapStyle), productionMapStyle ? 'c
 add('production_map_https', /^https:\/\//i.test(productionMapStyle), productionMapStyle || 'missing');
 add('production_map_not_demo', !/demotiles\.maplibre\.org/i.test(productionMapStyle), productionMapStyle || 'missing');
 
+const privacyUrl = process.env.EXPO_PUBLIC_PRIVACY_URL || eas.build?.production?.env?.EXPO_PUBLIC_PRIVACY_URL || '';
+const termsUrl = process.env.EXPO_PUBLIC_TERMS_URL || eas.build?.production?.env?.EXPO_PUBLIC_TERMS_URL || '';
+const supportUrl = process.env.EXPO_PUBLIC_SUPPORT_URL || eas.build?.production?.env?.EXPO_PUBLIC_SUPPORT_URL || '';
+add('privacy_url_https', /^https:\/\//i.test(privacyUrl), privacyUrl || 'EXPO_PUBLIC_PRIVACY_URL missing');
+add('terms_url_https', /^https:\/\//i.test(termsUrl), termsUrl || 'EXPO_PUBLIC_TERMS_URL missing');
+add('support_url_https', /^https:\/\//i.test(supportUrl), supportUrl || 'EXPO_PUBLIC_SUPPORT_URL missing');
+
 console.log('\nSanad production release gate\n');
 for (const check of checks) {
   console.log((check.ok ? 'PASS' : 'BLOCK') + '  ' + check.name + (check.detail ? ' — ' + check.detail : ''));

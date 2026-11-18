@@ -1,24 +1,23 @@
 # Checklist — Release Candidate
 
-- [x] Domain permissions
-- [x] Professional approval workflow
-- [x] Media ordering/cover validation
-- [x] Advanced filter domain logic
-- [x] RLS baseline and domain tests
-- [x] Full TypeScript typecheck
-- [x] Device diagnostics screen
+- [x] Domain permissions / RLS baseline / domain tests
 - [x] Offline property/message/appointment sync hardening
 - [x] Successful EAS iOS Simulator Development Build
 - [x] Low-cost EAS source-check workflow
-- [x] Production release gate script
-- [x] Push ticket/receipt worker code and tests
-- [x] Production base-map Style URL configured
-- [x] Production map rejects MapLibre demo tiles
-- [x] Production map requires HTTPS
-- [x] OpenFreeMap attribution/context disclosure
-- [x] Map load/error/retry UI
-- [ ] Verify/enable periodic Push worker Scheduler
-- [x] Deploy v0.14 Push Edge Functions after Supabase restore
+- [x] Push ticket/receipt worker code and live Edge Functions
+- [x] Production base-map Style URL + HTTPS/demo guards
+- [x] In-app account deletion request entry point
+- [x] Account-deletion request table with self-read RLS
+- [x] Client writes to deletion requests blocked
+- [x] Account-deletion Edge Function design
+- [x] In-app privacy and terms screens
+- [x] Technical retention/account-deletion documentation
+- [x] Release gate blocks missing public legal/support URLs
+- [ ] Deploy and verify request-account-deletion Edge Function
+- [ ] Administrative review/finalization workflow for deletion requests
+- [ ] Final legal review of privacy/terms/retention
+- [ ] Publish real HTTPS privacy/terms/support pages
+- [ ] Verify/enable periodic Push worker Scheduler when first device is registered
 - [ ] Physical Push end-to-end delivery test
 - [ ] Supabase local reset + RLS integration tests
 - [ ] National-launch map SLA/self-hosting decision
@@ -28,4 +27,3 @@
 - [ ] First physical iPhone Development Build
 - [ ] Device QA + accessibility + Arabic typography QA
 - [ ] Approved Sanad app icon/splash in native project
-- [ ] Privacy/terms/store compliance
