@@ -5,20 +5,14 @@ on:
     branches: ['check/eas-source']
 
 jobs:
-  map_typecheck:
-    name: Map native TypeScript diagnostic
+  checks:
+    name: Source, TypeScript, native and iOS prebuild checks
     environment: development
     steps:
       - uses: eas/checkout
       - uses: eas/install_node_modules
-      - run: node -e "require('fs').writeFileSync('tsconfig.mapdiag.json', JSON.stringify({extends:'./tsconfig.json',include:['src/lib/config.ts','src/components/SanadMap.native.tsx'],exclude:['supabase/functions/**/*','.tmp-domain/**/*','node_modules/**/*']}))"
-      - run: npx tsc --noEmit -p tsconfig.mapdiag.json
-
-  ui_typecheck:
-    name: Geo and diagnostics TypeScript diagnostic
-    environment: development
-    steps:
-      - uses: eas/checkout
-      - uses: eas/install_node_modules
-      - run: node -e "require('fs').writeFileSync('tsconfig.uidiag.json', JSON.stringify({extends:'./tsconfig.json',include:['app/(tabs)/geo.tsx','src/services/deviceDiagnostics.ts'],exclude:['supabase/functions/**/*','.tmp-domain/**/*','node_modules/**/*']}))"
-      - run: npx tsc --noEmit -p tsconfig.uidiag.json
+      - run: npm run check
+      - run: npm run typecheck
+      - run: npm run native:check
+      - run: npm run workflow:check
+      - run: npm run native:ios-preflight

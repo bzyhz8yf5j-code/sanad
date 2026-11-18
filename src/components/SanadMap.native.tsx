@@ -51,14 +51,14 @@ const s = StyleSheet.create({
   wrap: { height: 320, borderRadius: 18, overflow: 'hidden', backgroundColor: colors.navy800 },
   map: { flex: 1 },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(6,20,37,0.42)',
   },
   loadingText: { color: colors.text, fontSize: 13, fontWeight: '800', writingDirection: 'rtl' },
   errorOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     padding: 22,
     alignItems: 'center',
     justifyContent: 'center',
